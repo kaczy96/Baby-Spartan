@@ -41,7 +41,7 @@ GameObject:
   - component: {fileID: 50292122847220020}
   - component: {fileID: 61218775604564878}
   m_Layer: 0
-  m_Name: kwadrat czerwony (1)
+  m_Name: Enemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
