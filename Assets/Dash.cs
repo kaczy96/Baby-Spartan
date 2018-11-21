@@ -27,14 +27,6 @@ public class Dash : MonoBehaviour {
             {
                 direction = 2;
             }
-            else if (Input.GetKeyDown(KeyCode.UpArrow))
-            {
-                direction = 3;
-            }
-            else if ((Input.GetKeyDown(KeyCode.DownArrow)))
-            {
-                direction = 4;
-            }
         
         }
         else
@@ -56,14 +48,6 @@ public class Dash : MonoBehaviour {
                 else if (direction == 2)
                 {
                     rb.velocity = Vector2.right * dashSpeed;
-                }
-                else if (direction == 3)
-                {
-                    rb.velocity = Vector2.up * dashSpeed;
-                }
-                else if (direction == 4)
-                {
-                    rb.velocity = Vector2.down * dashSpeed;
                 }
             }
         }

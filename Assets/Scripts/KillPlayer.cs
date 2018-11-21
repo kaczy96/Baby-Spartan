@@ -5,23 +5,35 @@ using UnityEngine;
 public class KillPlayer : MonoBehaviour {
 
     public LevelManager levelManager;
+    bool check;
+    public Collider2D other;
+    float wait = 1f;
 
-	void Start ()
+    void Start ()
     {
         levelManager = FindObjectOfType<LevelManager>();
-	}
+    }
 	
 	void Update ()
     {
-		
+
+        if(HP_Bar.hp <= 0)
+        Kill();
 	}
 
-    private void OnTriggerEnter2D(Collider2D other)
+    public void Kill()
     {
-        if(other.name == "Player")
+        wait -= Time.deltaTime;
+        if (wait < 0)
         {
+            Debug.Log("You die");
             levelManager.RespawnPlayer();
+            HP_Bar.hp = 100f;
+        }
+            
         }
     }
 
-}
+   
+
+
