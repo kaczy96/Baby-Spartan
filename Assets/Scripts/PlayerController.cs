@@ -13,18 +13,10 @@ public class PlayerController : MonoBehaviour {
     private bool doubleJump;
     private float moveVelocity;
     private GameObject death;
-    private Rigidbody2D rb;
-    public float dashSpeed;
-    private float dashTime;
-    public float startDashTime;
-    private int direction;
-    bool TurnRight = true;
+    
+    public static bool TurnRight = true;
 
-    void Start ()
-    {
-        rb = GetComponent<Rigidbody2D>();
-        dashTime = startDashTime;
-    }
+    
 
     void FixedUpdate()
     {
@@ -56,19 +48,14 @@ public class PlayerController : MonoBehaviour {
         {
             GetComponent<Rigidbody2D>().velocity = new Vector2(moveSpeed, GetComponent<Rigidbody2D>().velocity.y);
             moveVelocity = moveSpeed;
-            direction = 1;
+            TurnRight = false;
         }
 
         if (Input.GetKey(KeyCode.A))
         {
             GetComponent<Rigidbody2D>().velocity = new Vector2(-moveSpeed, GetComponent<Rigidbody2D>().velocity.y);
             moveVelocity = -moveSpeed;
-            direction = 2;
-        }
-        if(Input.GetKey(KeyCode.V))
-        {
-            Dash(TurnRight);
-            Debug.Log("Dashing");
+            TurnRight = true;
         }
 
         GetComponent<Rigidbody2D>().velocity = new Vector2(moveVelocity, GetComponent<Rigidbody2D>().velocity.y);
@@ -102,22 +89,6 @@ public class PlayerController : MonoBehaviour {
         }
     }
 
-    public void Dash(bool TurnRight)
-    {
-        Debug.Log("Dash functions");
-        if (dashTime <= 0)
-        {
-            direction = 0;
-            dashTime = startDashTime;
-            if (!TurnRight)
-            {
-                rb.velocity = Vector2.left * dashSpeed;
-            }
-            else
-            {
-                rb.velocity = Vector2.right * dashSpeed;
-            }
-            dashTime -= Time.deltaTime;
-        }
+    
     }
-}
+

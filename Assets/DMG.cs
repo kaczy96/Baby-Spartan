@@ -9,10 +9,8 @@ public class DMG : MonoBehaviour
 
     public void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag == "Player")
-        {
-            Debug.Log("Boom");
-            HP_Bar.hp =- DMGValue;
-        }
+        
+            HP_Bar.health =- 10f;
+        
     }
 }

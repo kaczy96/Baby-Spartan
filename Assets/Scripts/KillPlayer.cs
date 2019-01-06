@@ -7,7 +7,7 @@ public class KillPlayer : MonoBehaviour {
     public LevelManager levelManager;
     bool check;
     public Collider2D other;
-    float wait = 1f;
+    float wait = 2f;
 
     void Start ()
     {
@@ -17,7 +17,7 @@ public class KillPlayer : MonoBehaviour {
 	void Update ()
     {
 
-        if(HP_Bar.hp <= 0)
+        if(HP_Bar.health <= 0)
         Kill();
 	}
 
@@ -28,7 +28,7 @@ public class KillPlayer : MonoBehaviour {
         {
             Debug.Log("You die");
             levelManager.RespawnPlayer();
-            HP_Bar.hp = 100f;
+            HP_Bar.health = 100f;
         }
             
         }

@@ -3,53 +3,66 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Dash : MonoBehaviour {
-    private Rigidbody2D rb;
-    public float dashSpeed;
-    private float dashTime;
-    public float startDashTime;
-    private int direction;
 
-    void Start ()
+    private Rigidbody2D rb;
+    private bool facingRight = PlayerController.TurnRight;
+    private int direction;
+    public DashState dashState;
+    public float dashTimer;
+    public float maxDash = 20f;
+    public float dashSpeed;
+
+    public Vector2 savedVelocity;
+    void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        dashTime = startDashTime;
     }
 
-    void Update ()
+    void Update()
     {
-        if (direction == 0)
+        switch (dashState)
         {
-            if (Input.GetKeyDown(KeyCode.LeftArrow))
-            {
-                direction = 1;
-            }
-            else if (Input.GetKeyDown(KeyCode.RightArrow))
-            {
-                direction = 2;
-            }
-        
-        }
-        else
-        {
-            if (dashTime <= 0)
-            {
-                direction = 0;
-                dashTime = startDashTime;
-                rb.velocity = Vector2.zero;
-            }
-            else
-            {
-                dashTime -= Time.deltaTime;
-
-                if (direction == 1)
+            case DashState.Ready:
+                var isDashKeyDown = Input.GetKeyDown(KeyCode.LeftShift);
+                if (isDashKeyDown & PlayerController.TurnRight)
                 {
-                    rb.velocity = Vector2.left * dashSpeed;
+                    savedVelocity = rb.velocity;
+                    rb.velocity = new Vector2(rb.velocity.x * dashSpeed, rb.velocity.y);
+                    dashState = DashState.Dashing;
                 }
-                else if (direction == 2)
+                else if (isDashKeyDown & !PlayerController.TurnRight)
                 {
-                    rb.velocity = Vector2.right * dashSpeed;
+                    savedVelocity = rb.velocity;
+                    rb.velocity = new Vector2(rb.velocity.x * -dashSpeed, rb.velocity.y);
+                    dashState = DashState.Dashing;
                 }
-            }
+                break;
+            case DashState.Dashing:
+                dashTimer += Time.deltaTime * 3;
+                if (dashTimer >= maxDash)
+                {
+                    dashTimer = maxDash;
+                    rb.velocity = savedVelocity;
+                    dashState = DashState.Cooldown;
+                }
+                break;
+            case DashState.Cooldown:
+                dashTimer -= Time.deltaTime;
+                if (dashTimer <= 0)
+                {
+                    dashTimer = 0;
+                    dashState = DashState.Ready;
+                }
+                break;
         }
     }
 }
+
+public enum DashState
+{
+    Ready,
+    Dashing,
+    Cooldown
+}
+
+
